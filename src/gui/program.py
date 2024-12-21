@@ -5,36 +5,6 @@ from PIL import ImageTk, Image
 from io import BytesIO
 
 
-
-
-# root = tk.Tk()
-# root.title('ostrova.65')
-# root.geometry('450x700')
-
-# def call_menu():
-#     pass
-# def hide_menu():
-#     pass
-
-# main_frame = tk.Frame(root, bg = '#FFFFFF')
-# main_frame.pack(fill='both', expand=True)
-# toogle_button = tk.Button(master= main_frame, text = 'menu', command = call_menu)
-# toogle_button.pack(padx=10)
-# menu_frame = tk.Frame(root, bg = '#FFFFFF')
-# menu_frame.pack()
-
-# menu_label = tk.Label(menu_frame, text="menu", bg='white', fg='black')
-# menu_label.pack()
-# for i in range(1, 4):
-#     label = tk.Label(menu_frame, text = f'item {i}', bg = 'gray', font=('Arial', 14))
-#     label.pack()
-
-# hide_menu()
-
-# # root.mainloop()
-
-
-
 class MainApp:
     def __init__(self, root):
         # Приложение
@@ -47,6 +17,7 @@ class MainApp:
         self.root = root
         self.root.title('ostrova.65')
         self.root.geometry('450x700')
+        self.cards = []
 
 
 
@@ -69,7 +40,7 @@ class MainApp:
             self.label.pack(pady=5, anchor='w', padx=4, expand=False)
 
 
-        self.find_button = tk.Button(self.head_frame, text='Фильтр',command = self.call_finder, bg = self.COLOR_HEAD)
+        self.find_button = tk.Button(self.head_frame, text='Фильтр',command = self.search_cards, bg = self.COLOR_HEAD)
         self.find_button.pack(side=tk.RIGHT, padx=5)
         self.find_enter = tk.Entry(self.head_frame, bg = self.COLOR_HEAD, justify='left', font=('Arial', 14), fg= 'black', show='')
         self.find_enter.pack(side=tk.RIGHT, padx=5)
@@ -147,27 +118,39 @@ class MainApp:
     def call_finder(self):
         pass
 
-    def new_card(self, name:str, cost:str, img_path:str, body_up:str, body_deep:str, tags:str) -> None:
-        if len(body_up) > 450:
-            body_up = body_up[:440] + '...'
+
+    def search_cards(self):
+        query = self.find_enter.get().lower()  # Получаем текст из поля ввода и приводим к нижнему регистру
+        for card_name, card_text, tags, card in self.cards:
+            if query in card_text.lower() or query in card_name.lower() or query in tags.lower():  # Проверяем наличие текста в карточке
+                card.pack(pady=5, padx=10, fill=tk.X)  # Показываем карточку
+            else:
+                card.pack_forget()  # Скрываем карточку
+
+    def new_card(self, name:str, cost:str, img_path:str, body:str, tags:str) -> None:
+        if len(body) > 450:
+            body = body[:440] + '...'
         photo = ImageTk.PhotoImage(file=img_path)
 
-        self.card_frame = tk.Frame(self.scrollable_frame, bg=self.COLOR_BODY)
-        self.card_frame.pack(fill='both', expand=True)
-        self.name_card = tk.Label(self.card_frame, text = name, font=('Arial', 16), fg = 'black', bg=self.COLOR_BODY)
-        self.img_card = tk.Label(self.card_frame, text = 'loading...', image = photo)
+        card_frame = tk.Frame(self.scrollable_frame, bg=self.COLOR_BODY)
+        card_frame.pack(fill='both', expand=True)
+        name_card = tk.Label(card_frame, text = name, font=('Arial', 16), fg = 'black', bg=self.COLOR_BODY)
+        img_card = tk.Label(card_frame, text = 'loading...', image = photo)
         
-        self.body_up_card = tk.Label(self.card_frame, text = body_up, font=('Arial', 10), bg = self.COLOR_BODY, anchor='nw', wraplength=400)
-        self.detail_button = tk.Button(self.card_frame, text='Подробнее', font = ('Arial', 16), bg = 'white', command=self.open_card)
-        self.cost_card = tk.Label(self.card_frame, text = cost + ' руб.', font=('Arial', 16), bg=self.COLOR_BODY)
+        body_card = tk.Label(card_frame, text = body, font=('Arial', 10), bg = self.COLOR_BODY, anchor='nw', wraplength=400)
+        detail_button = tk.Button(card_frame, text='Подробнее', font = ('Arial', 16), bg = 'white', command=self.open_card)
+        cost_card = tk.Label(card_frame, text = cost + ' руб.', font=('Arial', 16), bg=self.COLOR_BODY)
         # self.new_card_button = tk.Button(self.card_frame, text = 'Следющая', font=('Arial', 16), bg='white', command=self.next_card)
-        self.name_card.pack(pady=10)
+        name_card.pack(pady=10)
         # c.pack(anchor='center', pady=10)
-        self.img_card.pack(pady=20)
-        self.body_up_card.pack(anchor='nw', padx=10, pady=10)
-        self.cost_card.pack(side='left', anchor='sw', pady=10, padx=10)
-        self.detail_button.pack(side='left', anchor='s', pady=10, padx=10)
+        img_card.pack(pady=20)
+        body_card.pack(anchor='nw', padx=10, pady=10)
+        cost_card.pack(side='left', anchor='sw', pady=10, padx=10)
+        detail_button.pack(side='left', anchor='s', pady=10, padx=10)
         # self.new_card_button.pack(side='right', anchor='se', pady=10, padx=10)
+        self.cards.append((name, body, tags, card_frame))
+
+
 
     def open_card(self):
         self.detail_card_frame = tk.Frame(self.body_frame, bg = self.COLOR_DETAIL)
@@ -175,6 +158,7 @@ class MainApp:
         self.back_button = tk.Button(self.detail_card_frame, text = 'Назад', command=self.back_to_park, bg=self.COLOR_DETAIL, font=('Arial', 14))
         self.back_button.pack(side='bottom', anchor='center', pady=10)
         self.card_frame.pack_forget()
+
 
     def back_to_park(self):
         self.detail_card_frame.pack_forget()
@@ -220,8 +204,8 @@ if __name__ == '__main__':
     app = MainApp(root)
     # input()
 
-    for i in range(10):
-        app.new_card(name=f'Test name of Card - {i}', cost= '500', img_path ='./pyt.png', body_up = 'Описание'*400, body_deep='Подробности', tags = '')
+    for i in range(25):
+        app.new_card(name=f'Test name of Card - {i}', cost= '500', img_path ='./pyt.png', body = 'Описание'*400, tags = '')
     root.mainloop()
 
     # card = AppGUI()
