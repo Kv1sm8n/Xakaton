@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from back_api import create_card
 
 url = "https://cultsakhalin.ru/events?limit=1000"
 def parse():
@@ -21,4 +22,4 @@ def parse():
         name = card.find("div", "EventCard_info__9dU2Z").find("div", "EventCard_title__1eRmT").getText()
         cost = card.find("div", "EventCard_info__9dU2Z").find("p", "EventCard_price__PtHTE").getText()
         
-    
+        create_card(metatag, date, name, url, card_img, cost)
