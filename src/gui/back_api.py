@@ -1,18 +1,20 @@
-from flask import Flask, render_template
+# import boot
+from flask import render_template
+from flask import Flask
 
 app = Flask(__name__)
 
 i = 0
-def create_card(metatag, date, name, url, body, cost=0):
+def create_card(metatag, date, name, url,img, body, cost=0):
     global i
     text_card = f'''<div class="event-card" id="card-{i}">
-                <img src={url} alt={name}>
+                <img src={img} alt={name}>
                 <h2>{name}</h2>
                 <p>{body}</p>
-                <p class="price">Стоимость: {cost} руб.</p>
-                <button class="details-button" id="detail-{i}">Подробнее</button>
+                <p class="price">{cost}</p>
+                <a href="{url}"><button class="details-button" id="detail-{i}">Подробнее</button></a>
                 <button class="favorite-button">Добавить в избранное</button>
-            </div>'''
+                </div>'''
     with open('./index.html', 'r', encoding='utf-8') as f:
         html = f.read()
     ind = html.rfind('</div>')
@@ -29,7 +31,7 @@ def create_card(metatag, date, name, url, body, cost=0):
 # create_card('metatag', 'ДАТА', 'АФИША ИМЯ', 'img', 'Описание', 100)
 @app.route('/')
 def index():
-    events = create_card('metatag', 'DATE', 'NAME', 'url', 'BODY', 'COST')  # Вызов функции при загрузке страницы
+    events = create_card('metatag', 'DATE', 'NAME', 'url', 'img', 'BOD Y'*100, 'COST')  # Вызов функции при загрузке страницы
     return render_template('index.html', events=events)
 
 if __name__ == '__main__':
