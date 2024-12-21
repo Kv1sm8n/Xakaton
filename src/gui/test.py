@@ -293,6 +293,12 @@ class CardApp:
         self.main_frame = tk.Frame(self.root, bg='red')
         self.main_frame.pack(fill='both', expand=True)
         # Создаем Canvas для прокрутки
+
+        self.head_frame = tk.Frame(self.main_frame, bg='blue')
+        self.head_frame.pack(fill='both')
+        self.label = tk.Label(self.head_frame, text = '14')
+        self.label.pack()
+
         self.body_frame = tk.Frame(self.main_frame, bg = 'red')
         self.body_frame.pack(fill='both', expand=True)
 

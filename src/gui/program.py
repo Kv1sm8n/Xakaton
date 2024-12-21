@@ -80,6 +80,31 @@ class MainApp:
         self.body_frame.pack(fill='both', expand=True)
 
        #!!!
+        self.canvas = tk.Canvas(self.body_frame)
+        self.scrollbar = tk.Scrollbar(self.body_frame, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        # Настраиваем scrollable_frame
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+
+        # Добавляем scrollable_frame в Canvas
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Настраиваем scrollbar и canvas
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        # Размещаем canvas и scrollbar
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Создаем карточки
+        # self.create_cards()
+
+        # Обработчик событий для прокрутки с помощью тачпада
+        self.root.bind_all("<MouseWheel>", self.on_mouse_wheel)
         # self.card_frame = tk.Frame(self.body_frame, bg=self.COLOR_BODY)
         # self.canvas = tk.Canvas(self.card_frame)
         # self.scrollbar = tk.Scrollbar(self.card_frame, orient="vertical", command=self.canvas.yview)
@@ -97,6 +122,7 @@ class MainApp:
         # self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         # self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         # self.root.bind_all("<MouseWheel>", self.on_mouse_wheel)
+        #!!!!!!!!!!!!!!!!!!!!!
         self.call_menu()    
     #     self.create_cards()
 
@@ -126,7 +152,7 @@ class MainApp:
             body_up = body_up[:440] + '...'
         photo = ImageTk.PhotoImage(file=img_path)
 
-        self.card_frame = tk.Frame(self.body_frame, bg=self.COLOR_BODY)
+        self.card_frame = tk.Frame(self.scrollable_frame, bg=self.COLOR_BODY)
         self.card_frame.pack(fill='both', expand=True)
         self.name_card = tk.Label(self.card_frame, text = name, font=('Arial', 16), fg = 'black', bg=self.COLOR_BODY)
         self.img_card = tk.Label(self.card_frame, text = 'loading...', image = photo)
@@ -134,14 +160,14 @@ class MainApp:
         self.body_up_card = tk.Label(self.card_frame, text = body_up, font=('Arial', 10), bg = self.COLOR_BODY, anchor='nw', wraplength=400)
         self.detail_button = tk.Button(self.card_frame, text='Подробнее', font = ('Arial', 16), bg = 'white', command=self.open_card)
         self.cost_card = tk.Label(self.card_frame, text = cost + ' руб.', font=('Arial', 16), bg=self.COLOR_BODY)
-        self.new_card_button = tk.Button(self.card_frame, text = 'Следющая', font=('Arial', 16), bg='white', command=self.next_card)
+        # self.new_card_button = tk.Button(self.card_frame, text = 'Следющая', font=('Arial', 16), bg='white', command=self.next_card)
         self.name_card.pack(pady=10)
         # c.pack(anchor='center', pady=10)
         self.img_card.pack(pady=20)
         self.body_up_card.pack(anchor='nw', padx=10, pady=10)
         self.cost_card.pack(side='left', anchor='sw', pady=10, padx=10)
         self.detail_button.pack(side='left', anchor='s', pady=10, padx=10)
-        self.new_card_button.pack(side='right', anchor='se', pady=10, padx=10)
+        # self.new_card_button.pack(side='right', anchor='se', pady=10, padx=10)
 
     def open_card(self):
         self.detail_card_frame = tk.Frame(self.body_frame, bg = self.COLOR_DETAIL)
@@ -153,6 +179,8 @@ class MainApp:
     def back_to_park(self):
         self.detail_card_frame.pack_forget()
         self.card_frame.pack(fill='both', expand=True)
+
+
 
     def next_card(self):
         pass
@@ -192,8 +220,8 @@ if __name__ == '__main__':
     app = MainApp(root)
     # input()
 
-    
-    app.new_card(name=f'Test name of Card - 1', cost= '500', img_path ='./pyt.png', body_up = 'Описание'*400, body_deep='Подробности', tags = '')
+    for i in range(10):
+        app.new_card(name=f'Test name of Card - {i}', cost= '500', img_path ='./pyt.png', body_up = 'Описание'*400, body_deep='Подробности', tags = '')
     root.mainloop()
 
     # card = AppGUI()
