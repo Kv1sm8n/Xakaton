@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-image: url('images/phone.jpg');;
 }
 
 header {
@@ -70,10 +70,12 @@ p {
 }
 
 .event-cards {
-    display: flex;
-    flex-wrap: wrap; /* Позволяет карточкам обтекать */
-    max-width: 300px;
+    display: grid; /* Включаем Grid */
+    grid-template-columns: 1fr; /* Одна колонка */
+    place-items: center; /* Центрируем элементы по обеим осям */
+    height: 100vh; /* Высота контейнера на весь экран */
 }
+
 
 .event-card {
     background-color: white;
@@ -81,7 +83,9 @@ p {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin: 10px;
     padding: 15px;
-    width: calc(450px - 20px); /* Полная ширина для мобильных устройств */
+    /* width: calc(100% - 20px); */
+    flex: 0 0 100%; /* Каждый элемент занимает 100% ширины контейнера */
+    margin-bottom: 20px; /* Отступ между карточками */ /* Полная ширина для мобильных устройств */
 }
 
 .event-card img {
@@ -93,14 +97,14 @@ p {
 }
 
 .details-button, .favorite-button {
-    background-color: #28a745; /* Зеленый цвет для кнопок */
+    background-color: #185AC5; /* Зеленый цвет для кнопок */
     color: white;
     border: none;
     padding: 10px;
 }
 
 .details-button:hover, .favorite-button:hover {
-    background-color: #218838; /* Темнее при наведении */
+    background-color: #1049A7; /* Темнее при наведении */
 }
 
 footer {

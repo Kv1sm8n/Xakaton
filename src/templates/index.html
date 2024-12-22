@@ -35,9 +35,6 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Афиша культурных событий в городе</p>
-    </footer>
 
     <!-- Подключение JavaScript для управления меню -->
     <script>
@@ -60,27 +57,25 @@
                 const element_button = document.getElementById(`detail-${button_id}`)
                 console.log(`text - ${element_button.innerText}`)
                 const button_text = element_button.innerText
-                if (button_text == 'Подробнее') {
-                    
-                    const element_card = document.getElementById(`card-${button_id}`)
-                    element_card.style.backgroundColor = '#000000'
-                    element_card.style.height = "400px";
-                    
-                    element_button.textContent='Свернуть';
-                    element_button.style.display="flex";
-                    element_button.style.bottom="10px";
-                } else {
-                    element_button.textContent='Подробнее';
-                    element_card.backgroundColor="white";
-                    element_card.style.borderRadius= "5px";
-                    element_card.style.boxShadow= "0 2px 5px rgba(0,0,0,0.1)";
-                    // margin: 10px;
-                    // padding: 15px;
-                    // width: calc(100% - 20px);
-                }
+                
 
             });
         });
+
+        document.getElementById('search').addEventListener('input', function() {
+        // console.log("Вызов")
+        const query = this.value.toLowerCase(); // Получаем введенный текст в нижнем регистре
+        const cards = document.querySelectorAll('.event-card'); // Получаем все карточки
+        cards.forEach(card => {
+            // console.log(card.getAttribute('data-title'));
+            const title = card.getAttribute('data-title').toLowerCase(); // Получаем название события из атрибута
+            if (title.includes(query)) {
+                card.style.display = 'block'; // Показываем карточку, если название содержит запрос
+            } else {
+                card.style.display = 'none'; // Скрываем карточку, если нет совпадений
+            }
+    });
+    });
         
     </script>
 

@@ -7,12 +7,15 @@ app = Flask(__name__)
 i = 0
 def create_card(metatag, date, name, url, img, cost=0):
     global i
-    text_card = f'''<div class="event-card" id="card-{i}">
+    text_card = f'''<div class="event-card" id="card-{i}" data-title="{name}{i}{metatag}" metatag="{metatag}" is_favor="false">
                 <img src={img} alt={name}>
                 <h2>{name}</h2>
+                <p class="date">{date}</p>
+                <br>
                 <p class="price">{cost}</p>
+                
                 <a href="{url}"><button class="details-button" id="detail-{i}">Подробнее</button></a>
-                <button class="favorite-button">Добавить в избранное</button>
+               
                 </div>'''
     with open('./templates/index.html', 'r', encoding='utf-8') as f:
         html = f.read()
