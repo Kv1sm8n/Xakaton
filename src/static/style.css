@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.menu {
+    position: relative;
+}
+
+.toggle-menu {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.menu-items {
+    display: none; /* Скрываем меню по умолчанию */
+    position: absolute;
+    background-color: #444;
+    list-style-type: none;
+}
+
+.menu-items li {
+    padding: 10px;
+}
+
+.menu-items li a {
+    color: white;
+    text-decoration: none;
+}
+
+.menu-items li:hover {
+    background-color: #555; /* Цвет при наведении */
+}
+
+main {
+    padding: 20px;
+}
+
+p {
+    max-width: 400px;
+    word-break: break-all;
+}
+
+#search {
+    width: calc(100% - 22px);
+    padding: 10px;
+}
+
+#search-button {
+    padding: 10px 15px;
+}
+
+.event-cards {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет карточкам обтекать */
+    max-width: 300px;
+}
+
+.event-card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 10px;
+    padding: 15px;
+    width: calc(450px - 20px); /* Полная ширина для мобильных устройств */
+}
+
+.event-card img {
+    max-width: 100%;
+}
+
+.price {
+    font-weight: bold; /* Выделяем цену */
+}
+
+.details-button, .favorite-button {
+    background-color: #28a745; /* Зеленый цвет для кнопок */
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
+.details-button:hover, .favorite-button:hover {
+    background-color: #218838; /* Темнее при наведении */
+}
+
+footer {
+    text-align: center;
+}
+
+/* Адаптивный дизайн для экранов большего размера */
+@media (min-width: 600px) {
+   .event-card {
+       width: calc(50% - 20px); /* Две карточки в ряд на экранах большего размера */
+   }
+}
+
+@media (min-width: 900px) {
+   .event-card {
+       width: calc(33% - 20px); /* Три карточки в ряд на больших экранах */
+   }
+}
