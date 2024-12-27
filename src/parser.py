@@ -1,20 +1,21 @@
-#import requests
+import requests
 from bs4 import BeautifulSoup
 from back_api import create_card
 
-#url = "https://cultsakhalin.ru/events?limit=1000"
+url = "https://cultsakhalin.ru/events?limit=1000"
 
 def parse():
-    #response = requests.get(url)
+    global url
+    response = requests.get(url)
 
-    #bs = BeautifulSoup(response.text, 'html.parser')
+    bs = BeautifulSoup(response.text, 'html.parser')
 
     # Открытие локального HTML-файла
-    with open('./last_events.html', 'r', encoding='utf-8') as file:
+    """with open('./last_events.html', 'r', encoding='utf-8') as file:
         html_content = file.read()
 
     # Парсинг файла с помощью BeautifulSoup
-    bs = BeautifulSoup(html_content, 'html.parser')
+    bs = BeautifulSoup(html_content, 'html.parser')"""
 
     sect = bs.find("div", "EntitiesGrid_cardsGrid__2fOLp EntitiesGrid_cardsGrid_20__1n5Q8")
     links = sect.find_all("a")
